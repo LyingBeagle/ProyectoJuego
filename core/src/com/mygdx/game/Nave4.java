@@ -30,10 +30,6 @@ public class Nave4 {
     private int dashCooldownTimer = 0;
     private boolean isDashing = false;
 
-    private int lastKey = -1; // Última tecla presionada
-    private int lastKeyTimer = 0;
-    private int doubleTapInterval = 20; // Intervalo para detectar doble pulsación
-
     public Nave4(int x, int y, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala) {
         sonidoHerido = soundChoque;
         this.soundBala = soundBala;
@@ -62,27 +58,30 @@ public class Nave4 {
             if (!isDashing) {
                 xVel = 0;
                 yVel = 0;
-                if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
-                    handleDoubleTap(Input.Keys.A);
-                    if (!isDashing) xVel -= speed;
+                if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+                    xVel -= speed;
                 }
-                if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
-                    handleDoubleTap(Input.Keys.D);
-                    if (!isDashing) xVel += speed;
+                if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+                    xVel += speed;
                 }
-                if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
-                    handleDoubleTap(Input.Keys.S);
-                    if (!isDashing) yVel -= speed;
+                if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+                    yVel -= speed;
                 }
-                if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
-                    handleDoubleTap(Input.Keys.W);
-                    if (!isDashing) yVel += speed;
+                if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+                    yVel += speed;
+                }
+
+                // Activar dash con Shift
+                if (Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_LEFT) && dashCooldownTimer <= 0) {
+                    dashTimer = dashDuration;
+                    isDashing = true;
                 }
             } else {
-                if (lastKey == Input.Keys.A) xVel = -dashSpeed;
-                if (lastKey == Input.Keys.D) xVel = dashSpeed;
-                if (lastKey == Input.Keys.S) yVel = -dashSpeed;
-                if (lastKey == Input.Keys.W) yVel = dashSpeed;
+                if (xVel != 0 || yVel != 0) {
+                    float angle = MathUtils.atan2(yVel, xVel);
+                    xVel = dashSpeed * MathUtils.cos(angle);
+                    yVel = dashSpeed * MathUtils.sin(angle);
+                }
             }
 
             // Mantener dentro de los bordes de la ventana
@@ -107,19 +106,6 @@ public class Nave4 {
             juego.agregarBala(bala);
             soundBala.play();
         }
-    }
-
-    private void handleDoubleTap(int key) {
-        if (lastKey == key && lastKeyTimer > 0 && lastKeyTimer < doubleTapInterval) {
-            if (dashCooldownTimer <= 0 && dashTimer <= 0) {
-                dashTimer = dashDuration;
-                isDashing = true;
-            }
-        } else {
-            lastKey = key;
-            lastKeyTimer = doubleTapInterval;
-        }
-        lastKeyTimer--;
     }
 
     public boolean checkCollision(Ball2 b) {
@@ -171,4 +157,3 @@ public class Nave4 {
         vidas = vidas2;
     }
 }
-
