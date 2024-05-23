@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
 
-public class Ball2 {
+public class Ball2{
 	private int x;
     private int y;
     private int xSpeed;

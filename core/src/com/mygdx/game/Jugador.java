@@ -8,27 +8,14 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 
-public class Nave4 {
-    private boolean destruida = false;
-    private int vidas = 3;
+public class Jugador extends Unidad implements InteraccionesEnPantalla{
+    
     private float xVel = 0;
     private float yVel = 0;
-    private Sprite spr;
-    private Sound sonidoHerido;
-    private Sound soundBala;
-    private Texture txBala;
-    private boolean herido = false;
-    private int tiempoHeridoMax = 50;
-    private int tiempoHerido;
     private final float speed = 350; // Velocidad constante
 
-    public Nave4(int x, int y, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala) {
-        sonidoHerido = soundChoque;
-        this.soundBala = soundBala;
-        this.txBala = txBala;
-        spr = new Sprite(tx);
-        spr.setPosition(x, y);
-        spr.setBounds(x, y, 45, 45);
+    public Jugador(int x, int y, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala) {
+        super(x,y,tx,soundChoque,txBala,soundBala);
     }
 
     public void draw(SpriteBatch batch, PantallaJuego juego) {
