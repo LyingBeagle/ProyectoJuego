@@ -161,9 +161,9 @@ public class PantallaJuego implements Screen {
         }
         batch.end();
         // Nivel completado
-        
-        if (enemigo.estaDestruido()) {
-            System.out.println("DEBUG1");
+        //System.out.println("DEBUG: Estado del enemigo Vidas: " + enemigo.getVidas() + "- Destruida: " + enemigo.estaDestruido());
+
+        if (enemigo.getVidas() == 0) {
             avanzarARondaSiguiente();
         }
     }
