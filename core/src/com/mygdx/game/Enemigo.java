@@ -3,6 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 
 public class Enemigo extends Unidad implements InteraccionesUnidades {
 
@@ -12,9 +13,20 @@ public class Enemigo extends Unidad implements InteraccionesUnidades {
 
     @Override
     public void draw(SpriteBatch batch, PantallaJuego juego) {
-        if (!destruida) {
+        
+        float x = spr.getX();
+        float y = spr.getY();
+        
+        if(!herido){
             spr.draw(batch);
+        } else {
+            spr.setX(spr.getX() + MathUtils.random(-2, 2));
+            spr.draw(batch);
+            spr.setX(x);
+            tiempoHerido--;
+            if (tiempoHerido <= 0) herido = false;
         }
+        
     }
 
     @Override
