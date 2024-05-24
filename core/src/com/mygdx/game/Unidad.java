@@ -25,6 +25,28 @@ public abstract class Unidad {
         this.spr.setBounds(x, y, 45, 45);
     }
     
-    
+    public boolean estaDestruido() {
+        return !herido && destruida;
+    }
+
+    public boolean estaHerido() {
+        return herido;
+    }
+
+    public int getVidas() {
+        return vidas;
+    }
+
+    public int getX() {
+        return (int) spr.getX();
+    }
+
+    public int getY() {
+        return (int) spr.getY();
+    }
+
+    public void setVidas(int vidas2) {
+        vidas = vidas2;
+    }
     
 }

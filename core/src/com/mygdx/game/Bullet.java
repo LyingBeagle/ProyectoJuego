@@ -45,5 +45,7 @@ public class Bullet{
 	    }
 	    
 	    public boolean isDestroyed() {return destroyed;}
+            
+            public Sprite getSpr(){ return spr; }
 	
 }

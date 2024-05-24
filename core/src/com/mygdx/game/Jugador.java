@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 
-public class Jugador extends Unidad implements InteraccionesEnPantalla{
+public class Jugador extends Unidad implements InteraccionesUnidades{
     
     private float xVel = 0;
     private float yVel = 0;
@@ -28,15 +28,10 @@ public class Jugador extends Unidad implements InteraccionesEnPantalla{
             yVel = 0;
 
             // que se mueva con teclado
-            if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) xVel = -speed;
-            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) xVel = speed;
-            if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) yVel = -speed;
-            if (Gdx.input.isKeyPressed(Input.Keys.UP)) yVel = speed;
-            
-            if (Gdx.input.isKeyPressed(Input.Keys.A)) xVel = -speed;
-            if (Gdx.input.isKeyPressed(Input.Keys.D)) xVel = speed;
-            if (Gdx.input.isKeyPressed(Input.Keys.S)) yVel = -speed;
-            if (Gdx.input.isKeyPressed(Input.Keys.W)) yVel = speed;
+            if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) xVel = -speed;
+            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) xVel = speed;
+            if (Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S)) yVel = -speed;
+            if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) yVel = speed;
 
             // Actualizar la posición de la nave
             float deltaTime = Gdx.graphics.getDeltaTime();
@@ -58,7 +53,7 @@ public class Jugador extends Unidad implements InteraccionesEnPantalla{
         }
 
         // disparo
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             Bullet bala = new Bullet(spr.getX() + spr.getWidth() / 2 - 5, spr.getY() + spr.getHeight() - 5, 0, 3, txBala);
             juego.agregarBala(bala);
             soundBala.play();
@@ -88,29 +83,5 @@ public class Jugador extends Unidad implements InteraccionesEnPantalla{
             return true;
         }
         return false;
-    }
-
-    public boolean estaDestruido() {
-        return !herido && destruida;
-    }
-
-    public boolean estaHerido() {
-        return herido;
-    }
-
-    public int getVidas() {
-        return vidas;
-    }
-
-    public int getX() {
-        return (int) spr.getX();
-    }
-
-    public int getY() {
-        return (int) spr.getY();
-    }
-
-    public void setVidas(int vidas2) {
-        vidas = vidas2;
     }
 }
