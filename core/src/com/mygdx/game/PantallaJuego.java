@@ -14,7 +14,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class PantallaJuego implements Screen {
 
-    private SpaceNavigation game;
+    private PuertaMagica game;
     private OrthographicCamera camera;    
     private SpriteBatch batch;
     private Sound explosionSound;
@@ -31,7 +31,7 @@ public class PantallaJuego implements Screen {
     private ArrayList<Ball2> balls2 = new ArrayList<>();
     private ArrayList<Bullet> balas = new ArrayList<>();
 
-    public PantallaJuego(SpaceNavigation game, int ronda, int vidasJugador, int vidasEnemigo, int score,  
+    public PantallaJuego(PuertaMagica game, int ronda, int vidasJugador, int vidasEnemigo, int score,  
             int velXAsteroides, int velYAsteroides, int cantAsteroides) {
         this.game = game;
         this.ronda = ronda;

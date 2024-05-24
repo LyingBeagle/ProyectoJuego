@@ -9,10 +9,10 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 public class PantallaMenu implements Screen {
 
-	private SpaceNavigation game;
+	private PuertaMagica game;
 	private OrthographicCamera camera;
 
-	public PantallaMenu(SpaceNavigation game) {
+	public PantallaMenu(PuertaMagica game) {
 		this.game = game;
         
 		camera = new OrthographicCamera();
@@ -27,7 +27,11 @@ public class PantallaMenu implements Screen {
 		game.getBatch().setProjectionMatrix(camera.combined);
 
 		game.getBatch().begin();
-		game.getFont().draw(game.getBatch(), "Bienvenido a Space Navigation !", 140, 400);
+		game.getFont().draw(game.getBatch(), "Bienvenido a Puerta Magica !", 140, 600);
+                game.getFont().draw(game.getBatch(), "Controles", 140, 550);
+                game.getFont().draw(game.getBatch(), "W - Mover arriba, S - Mover abajo", 140, 500);
+                game.getFont().draw(game.getBatch(), "A - Mover Izquierda, D - Mover derecha", 140, 450);
+                game.getFont().draw(game.getBatch(), "Espacio - Disparar", 140, 400);
 		game.getFont().draw(game.getBatch(), "Pincha en cualquier lado o presiona cualquier tecla para comenzar ...", 100, 300);
 	
 		game.getBatch().end();

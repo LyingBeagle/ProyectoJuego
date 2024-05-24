@@ -9,10 +9,10 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 public class PantallaGameOver implements Screen {
 
-	private SpaceNavigation game;
+	private PuertaMagica game;
 	private OrthographicCamera camera;
 
-	public PantallaGameOver(SpaceNavigation game) {
+	public PantallaGameOver(PuertaMagica game) {
 		this.game = game;
         
 		camera = new OrthographicCamera();
