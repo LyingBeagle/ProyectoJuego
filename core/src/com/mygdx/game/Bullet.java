@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 
-public class Bullet {
+public class Bullet{
 
 	private int xSpeed;
 	private int ySpeed;
@@ -45,5 +45,7 @@ public class Bullet {
 	    }
 	    
 	    public boolean isDestroyed() {return destroyed;}
+            
+            public Sprite getSpr(){ return spr; }
 	
 }

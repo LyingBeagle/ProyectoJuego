@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
 
-public class Ball2 {
+public class Ball2{
 	private int x;
     private int y;
     private int xSpeed;
@@ -49,7 +49,7 @@ public class Ball2 {
     	spr.draw(batch);
     }
     
-    public void checkCollision(Ball2 b2) {
+    public void checkCollisionBall(Ball2 b2) {
         if(spr.getBoundingRectangle().overlaps(b2.spr.getBoundingRectangle())){
         	// rebote
             if (getXSpeed() ==0) setXSpeed(getXSpeed() + b2.getXSpeed()/2);
@@ -63,6 +63,11 @@ public class Ball2 {
             b2.setySpeed(- b2.getySpeed()); 
         }
     }
+    
+    public boolean checkCollision(Ball2 o){
+            return true;
+        }
+    
 	public int getXSpeed() {
 		return xSpeed;
 	}
@@ -77,4 +82,5 @@ public class Ball2 {
 	}
 	
     
+        
 }
