@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 
-public class Jugador extends Unidad implements InteraccionesUnidades {
+public class Jugador extends Unidad implements Interacciones<Ball2> {
     
     private float xVel = 0;
     private float yVel = 0;
@@ -81,8 +81,8 @@ public class Jugador extends Unidad implements InteraccionesUnidades {
         }
     }
 
-    @Override
     public boolean checkCollision(Ball2 b) {
+        
         if (!herido && b.getArea().overlaps(spr.getBoundingRectangle())) {
             // rebote
             if (xVel == 0) xVel += b.getXSpeed() / 2;
