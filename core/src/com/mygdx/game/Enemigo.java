@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -7,28 +8,48 @@ import com.badlogic.gdx.math.MathUtils;
 
 public class Enemigo extends Unidad implements InteraccionesUnidades<Bullet> {
 
+    private float velocidadHorizontal; // Velocidad horizontal del enemigo
+    private boolean moviendoseDerecha; // Indica si el enemigo se está moviendo hacia la derecha
+    
     public Enemigo(int x, int y, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala) {
         super(x, y, tx, soundChoque, txBala, soundBala);
     }
-
+    
+    public void iniciarMovimiento(float velocidadHorizontal) {
+        this.velocidadHorizontal = velocidadHorizontal;
+        this.moviendoseDerecha = true; // Empezamos moviéndonos hacia la derecha
+    }
+        
     @Override
     public void draw(SpriteBatch batch, PantallaJuego juego) {
+     float x = spr.getX();
+     
+    if (!herido) {
         
-        float x = spr.getX();
-        float y = spr.getY();
+        float deltaTime = Gdx.graphics.getDeltaTime();
+        float newX = x + velocidadHorizontal * deltaTime;
         
-        if(!herido){
-            spr.draw(batch);
-        } else {
-            spr.setX(spr.getX() + MathUtils.random(-2, 2));
-            spr.draw(batch);
-            spr.setX(x);
-            tiempoHerido--;
-            if (tiempoHerido <= 0) herido = false;
-        }
-        
+        // que se mantenga dentro de los bordes de la ventana
+            if (newX < 0) {
+                velocidadHorizontal = Math.abs(velocidadHorizontal); // Hacer la velocidad positiva
+                newX = 0;
+            } else if (newX + spr.getWidth() > Gdx.graphics.getWidth()) {
+                velocidadHorizontal = -Math.abs(velocidadHorizontal); // Hacer la velocidad negativa
+                newX = Gdx.graphics.getWidth() - spr.getWidth();
+            }
+        spr.setPosition(newX, spr.getY());
+        spr.draw(batch);
+    } else {
+        float posX = spr.getX(); // Guardar la posición original en X
+        spr.setX(posX + MathUtils.random(-2, 2)); // Modificar la posición en X
+        spr.draw(batch);
+        spr.setX(posX); // Restaurar la posición original en X
+        tiempoHerido--;
+        if (tiempoHerido <= 0) herido = false;
     }
+}
 
+    @Override
     public boolean checkCollision(Bullet b) {
         
         if (!destruida && b.getSpr().getBoundingRectangle().overlaps(spr.getBoundingRectangle())) {
@@ -43,4 +64,5 @@ public class Enemigo extends Unidad implements InteraccionesUnidades<Bullet> {
         }
         return false;
     }
+    
 }

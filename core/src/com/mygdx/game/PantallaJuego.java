@@ -26,7 +26,7 @@ public class PantallaJuego implements Screen {
     private int cantAsteroides;
     
     private InteraccionesUnidades<Ball2> nave;
-    private InteraccionesUnidades<Bullet> enemigo;
+    private Enemigo enemigo;
     private ArrayList<Ball2> balls1 = new ArrayList<>();
     private ArrayList<Ball2> balls2 = new ArrayList<>();
     private ArrayList<Bullet> balas = new ArrayList<>();
@@ -67,6 +67,7 @@ public class PantallaJuego implements Screen {
                               Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")));
         
         enemigo.setVidas(vidasEnemigo);
+        enemigo.iniciarMovimiento(200);
 
         // Crear asteroides
         Random r = new Random();
@@ -162,6 +163,7 @@ public class PantallaJuego implements Screen {
         batch.end();
         // Nivel completado
         
+         
 
         if (enemigo.estaDestruido()) {
             avanzarARondaSiguiente();
