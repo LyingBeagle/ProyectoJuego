@@ -12,5 +12,5 @@ public class DesktopLauncher {
 		config.setTitle("Puerta Magica");
 		config.setWindowedMode(1200, 800);
 		new Lwjgl3Application(new PuertaMagica(), config);
-	}
+	} 
 }

@@ -8,16 +8,20 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 
-public class Jugador extends Unidad implements InteraccionesUnidades{
+public class Jugador extends Unidad implements InteraccionesUnidades {
     
     private float xVel = 0;
     private float yVel = 0;
     private final float speed = 350; // Velocidad constante
+    private final float dashSpeed = 5000; // Velocidad de dash
+    private final float dashCooldown = 1f; // Tiempo de enfriamiento entre dashes en segundos
+    private float timeSinceLastDash = 0f;
 
     public Jugador(int x, int y, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala) {
-        super(x,y,tx,soundChoque,txBala,soundBala);
+        super(x, y, tx, soundChoque, txBala, soundBala);
     }
 
+    @Override
     public void draw(SpriteBatch batch, PantallaJuego juego) {
         float x = spr.getX();
         float y = spr.getY();
@@ -33,14 +37,31 @@ public class Jugador extends Unidad implements InteraccionesUnidades{
             if (Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S)) yVel = -speed;
             if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) yVel = speed;
 
-            // Actualizar la posición de la nave
+            // Manejar dash
+            timeSinceLastDash += Gdx.graphics.getDeltaTime();
+            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && timeSinceLastDash >= dashCooldown) {
+                xVel *= dashSpeed / speed;
+                yVel *= dashSpeed / speed;
+                timeSinceLastDash = 0f;
+            }
+
+            // Actualizar la posiciÃ³n de la nave
             float deltaTime = Gdx.graphics.getDeltaTime();
             float newX = x + xVel * deltaTime;
             float newY = y + yVel * deltaTime;
 
             // que se mantenga dentro de los bordes de la ventana
-            if (newX < 0 || newX + spr.getWidth() > Gdx.graphics.getWidth()) xVel = 0;
-            if (newY < 0 || newY + spr.getHeight() > Gdx.graphics.getHeight()) yVel = 0;
+            if (newX < 0) {
+                newX = 0;
+            } else if (newX + spr.getWidth() > Gdx.graphics.getWidth()) {
+                newX = Gdx.graphics.getWidth() - spr.getWidth();
+            }
+
+            if (newY < 0) {
+                newY = 0;
+            } else if (newY + spr.getHeight() > Gdx.graphics.getHeight()) {
+                newY = Gdx.graphics.getHeight() - spr.getHeight();
+            }
 
             spr.setPosition(newX, newY);
             spr.draw(batch);
@@ -60,6 +81,7 @@ public class Jugador extends Unidad implements InteraccionesUnidades{
         }
     }
 
+    @Override
     public boolean checkCollision(Ball2 b) {
         if (!herido && b.getArea().overlaps(spr.getBoundingRectangle())) {
             // rebote
