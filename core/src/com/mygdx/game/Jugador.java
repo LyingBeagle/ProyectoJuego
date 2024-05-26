@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 
-public class Jugador extends Unidad implements Interacciones<Ball2> {
+public class Jugador extends Unidad implements InteraccionesUnidades<Ball2> {
     
     private float xVel = 0;
     private float yVel = 0;

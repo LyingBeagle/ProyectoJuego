@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 
-public class Enemigo extends Unidad implements Interacciones<Bullet> {
+public class Enemigo extends Unidad implements InteraccionesUnidades<Bullet> {
 
     public Enemigo(int x, int y, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala) {
         super(x, y, tx, soundChoque, txBala, soundBala);

@@ -25,8 +25,8 @@ public class PantallaJuego implements Screen {
     private int velYAsteroides; 
     private int cantAsteroides;
     
-    private Jugador nave;
-    private Enemigo enemigo;
+    private InteraccionesUnidades<Ball2> nave;
+    private InteraccionesUnidades<Bullet> enemigo;
     private ArrayList<Ball2> balls1 = new ArrayList<>();
     private ArrayList<Ball2> balls2 = new ArrayList<>();
     private ArrayList<Bullet> balas = new ArrayList<>();
