@@ -8,13 +8,15 @@ import com.badlogic.gdx.math.Rectangle;
 
 
 public class Ball2{
-	private int x;
+    private int x;
     private int y;
     private int xSpeed;
     private int ySpeed;
     private Sprite spr;
+    private EstrategiaMovimiento estrategiaMovimiento;
 
-    public Ball2(int x, int y, int size, int xSpeed, int ySpeed, Texture tx) {
+
+    public Ball2(int x, int y, int size, int xSpeed, int ySpeed, Texture tx, EstrategiaMovimiento estrategia) {
     	spr = new Sprite(tx);
     	this.x = x; 
  	
@@ -29,16 +31,20 @@ public class Ball2{
     	
         spr.setPosition(x, y);
         this.setXSpeed(xSpeed);
-        this.setySpeed(ySpeed);
+        this.setYSpeed(ySpeed);
+        
+        this.estrategiaMovimiento = estrategia;
     }
     public void update() {
+         estrategiaMovimiento.mover(this);
+        
         x += getXSpeed();
-        y += getySpeed();
+        y += getYSpeed();
 
         if (x+getXSpeed() < 0 || x+getXSpeed()+spr.getWidth() > Gdx.graphics.getWidth())
         	setXSpeed(getXSpeed() * -1);
-        if (y+getySpeed() < 0 || y+getySpeed()+spr.getHeight() > Gdx.graphics.getHeight())
-        	setySpeed(getySpeed() * -1);
+        if (y+getYSpeed() < 0 || y+getYSpeed()+spr.getHeight() > Gdx.graphics.getHeight())
+        	setYSpeed(getYSpeed() * -1);
         spr.setPosition(x, y);
     }
     
@@ -57,10 +63,10 @@ public class Ball2{
         	setXSpeed(- getXSpeed());
             b2.setXSpeed(-b2.getXSpeed());
             
-            if (getySpeed() ==0) setySpeed(getySpeed() + b2.getySpeed()/2);
-            if (b2.getySpeed() ==0) b2.setySpeed(b2.getySpeed() + getySpeed()/2);
-            setySpeed(- getySpeed());
-            b2.setySpeed(- b2.getySpeed()); 
+            if (getYSpeed() ==0) setYSpeed(getYSpeed() + b2.getYSpeed()/2);
+            if (b2.getYSpeed() ==0) b2.setYSpeed(b2.getYSpeed() + getYSpeed()/2);
+            setYSpeed(- getYSpeed());
+            b2.setYSpeed(- b2.getYSpeed()); 
         }
     }
     
@@ -74,13 +80,30 @@ public class Ball2{
 	public void setXSpeed(int xSpeed) {
 		this.xSpeed = xSpeed;
 	}
-	public int getySpeed() {
+	public int getYSpeed() {
 		return ySpeed;
 	}
-	public void setySpeed(int ySpeed) {
+	public void setYSpeed(int ySpeed) {
 		this.ySpeed = ySpeed;
 	}
 	
+    public int getX(){
+        return x;
+    }
     
-        
+    public int getY(){
+        return y;
+    }
+    
+    public void setX(int x){
+        this.x = x;
+    }
+    
+    public void setY(int y){
+        this.y = y;
+    }
+    
+    public float getSize(){
+        return spr.getWidth();
+    }
 }

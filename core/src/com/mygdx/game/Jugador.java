@@ -10,6 +10,8 @@ import com.badlogic.gdx.math.MathUtils;
 
 public class Jugador extends Unidad implements InteraccionesUnidades<Ball2> {
     
+    private static Jugador jugador_unico = null;
+    
     private float xVel = 0;
     private float yVel = 0;
     private final float speed = 350; // Velocidad constante
@@ -17,10 +19,30 @@ public class Jugador extends Unidad implements InteraccionesUnidades<Ball2> {
     private final float dashCooldown = 1f; // Tiempo de enfriamiento entre dashes en segundos
     private float timeSinceLastDash = 0f;
 
-    public Jugador(int x, int y, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala) {
+    private Jugador(int x, int y, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala) {
         super(x, y, tx, soundChoque, txBala, soundBala);
     }
-
+    
+    public static synchronized Jugador getJugador(int x, int y, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala){
+        
+        if(jugador_unico == null){
+            jugador_unico = new Jugador(x, y, tx, soundChoque, txBala, soundBala);
+        }
+        
+        return jugador_unico;
+    }
+    
+    public static synchronized void resetJugador() {
+        jugador_unico = null;
+    }
+    
+    public void reset(int x, int y, int vidas){
+        spr.setPosition(x, y);
+        this.vidas = vidas;
+        this.herido = false;
+        this.destruida = false;
+    }
+    
     @Override
     public void draw(SpriteBatch batch, PantallaJuego juego) {
         float x = spr.getX();
@@ -90,10 +112,10 @@ public class Jugador extends Unidad implements InteraccionesUnidades<Ball2> {
             xVel = -xVel;
             b.setXSpeed(-b.getXSpeed());
 
-            if (yVel == 0) yVel += b.getySpeed() / 2;
-            if (b.getySpeed() == 0) b.setySpeed(b.getySpeed() + (int) yVel / 2);
+            if (yVel == 0) yVel += b.getYSpeed() / 2;
+            if (b.getYSpeed() == 0) b.setYSpeed(b.getYSpeed() + (int) yVel / 2);
             yVel = -yVel;
-            b.setySpeed(-b.getySpeed());
+            b.setYSpeed(-b.getYSpeed());
 
             // actualizar vidas y herir
             vidas--;
