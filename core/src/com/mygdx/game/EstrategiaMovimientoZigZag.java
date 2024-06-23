@@ -17,3 +17,4 @@ public class EstrategiaMovimientoZigZag implements EstrategiaMovimiento {
         }
     }
 }
+

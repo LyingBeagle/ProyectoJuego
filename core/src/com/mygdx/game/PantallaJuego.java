@@ -11,6 +11,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.TimeUtils;
+import java.util.List;
 
 public class PantallaJuego implements Screen {
 
@@ -27,9 +29,11 @@ public class PantallaJuego implements Screen {
     
     private Jugador jugador;
     private Enemigo enemigo;
-    private ArrayList<Ball2> balls1 = new ArrayList<>();
-    private ArrayList<Ball2> balls2 = new ArrayList<>();
+    private ArrayList<Ball2> balls = new ArrayList<>();
     private ArrayList<Bullet> balas = new ArrayList<>();
+    
+    private EstrategiaGeneracion estrategiaGeneracion;
+    private long lastStrategyChangeTime;
 
     public PantallaJuego(PuertaMagica game, int ronda, int vidasJugador, int vidasEnemigo, int score,  
             int velXAsteroides, int velYAsteroides, int cantAsteroides) {
@@ -71,28 +75,29 @@ public class PantallaJuego implements Screen {
         
         enemigo.setVidas(vidasEnemigo);
         enemigo.iniciarMovimiento(200);
+        
+        estrategiaGeneracion = new GeneracionCirculo();
+        lastStrategyChangeTime = TimeUtils.nanoTime();
+        generarAsteroides();
 
-        // Crear asteroides
-        Random r = new Random();
-        for (int i = 0; i < cantAsteroides; i++) {
-            EstrategiaMovimiento estrategia;
-             switch (r.nextInt(2)) { // Elige un patrón de movimiento aleatorio
-        case 0:
-            estrategia = new EstrategiaMovimientoZigZag();
-            break;
-        case 1:
-            estrategia = new EstrategiaMovimientoAbajo();
-            break;
-        default:
-            estrategia = new EstrategiaMovimientoAbajo();
-            break;
+     }
+    
+    private void generarAsteroides(){
+        List<Ball2> nuevosAsteroides = estrategiaGeneracion.generarAsteroides(cantAsteroides, enemigo.getX(), enemigo.getY(), 
+                new Texture(Gdx.files.internal("aGreyMedium4.png")), velXAsteroides, velYAsteroides);
+        balls.addAll(nuevosAsteroides);
     }
-            Ball2 bb = new Ball2(r.nextInt((int)Gdx.graphics.getWidth()),
-                    50 + r.nextInt((int)Gdx.graphics.getHeight() - 50),
-                    20 + r.nextInt(10), velXAsteroides + r.nextInt(4), velYAsteroides + r.nextInt(4), 
-                    new Texture(Gdx.files.internal("aGreyMedium4.png")),estrategia);     
-            balls1.add(bb);
-            balls2.add(bb);
+    
+    private void cambiarEstrategia(){
+        //Cambiar la estrategia cada cierto tiempo
+        Random r = new Random();
+        switch (r.nextInt(2)) {
+            case 0:
+                estrategiaGeneracion = new GeneracionCirculo();
+                break;
+            case 1:
+                estrategiaGeneracion = new GeneracionLinea();
+                break;
         }
     }
 
@@ -109,16 +114,22 @@ public class PantallaJuego implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         dibujaEncabezado();
+        
+        // Cambiar la estrategia de generación cada cierto tiempo (ejemplo cada 5 segundos)
+        if (TimeUtils.nanoTime() - lastStrategyChangeTime > 5_000_000_000L) {
+        cambiarEstrategia();
+        lastStrategyChangeTime = TimeUtils.nanoTime();
+        }
+        
         if (!jugador.estaHerido()) {
             // Colisiones entre balas y asteroides y su destrucción  
             for (int i = 0; i < balas.size(); i++) {
                 Bullet b = balas.get(i);
                 b.update();
-                for (int j = 0; j < balls1.size(); j++) {    
-                    if (b.checkCollision(balls1.get(j))) {          
+                for (int j = 0; j < balls.size(); j++) {    
+                    if (b.checkCollision(balls.get(j))) {          
                         explosionSound.play();
-                        balls1.remove(j);
-                        balls2.remove(j);
+                        balls.remove(j);
                         j--;
                         score += 10;
                     }      
@@ -135,14 +146,14 @@ public class PantallaJuego implements Screen {
                 }
             }
             // Actualizar movimiento de asteroides dentro del área
-            for (Ball2 ball : balls1) {
+            for (Ball2 ball : balls) {
                 ball.update();
             }
             // Colisiones entre asteroides y sus rebotes  
-            for (int i = 0; i < balls1.size(); i++) {
-                Ball2 ball1 = balls1.get(i);   
-                for (int j = 0; j < balls2.size(); j++) {
-                    Ball2 ball2 = balls2.get(j); 
+            for (int i = 0; i < balls.size(); i++) {
+                Ball2 ball1 = balls.get(i);   
+                for (int j = 0; j < balls.size(); j++) {
+                    Ball2 ball2 = balls.get(j); 
                     if (i < j) {
                         ball1.checkCollision(ball2);
                     }
@@ -156,14 +167,13 @@ public class PantallaJuego implements Screen {
         jugador.draw(batch, this);
         enemigo.draw(batch, this);
         // Dibujar asteroides y manejar colisión con nave
-        for (int i = 0; i < balls1.size(); i++) {
-            Ball2 b = balls1.get(i);
+        for (int i = 0; i < balls.size(); i++) {
+            Ball2 b = balls.get(i);
             b.draw(batch);
             // Perdió vida o game over
             if (jugador.checkCollision(b)) {
                 // Asteroide se destruye con el choque             
-                balls1.remove(i);
-                balls2.remove(i);
+                balls.remove(i);
                 i--;
             }      
         }
