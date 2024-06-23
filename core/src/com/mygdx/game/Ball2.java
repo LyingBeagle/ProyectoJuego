@@ -40,12 +40,15 @@ public class Ball2{
         
         x += getXSpeed();
         y += getYSpeed();
-
-        if (x+getXSpeed() < 0 || x+getXSpeed()+spr.getWidth() > Gdx.graphics.getWidth())
-        	setXSpeed(getXSpeed() * -1);
-        if (y+getYSpeed() < 0 || y+getYSpeed()+spr.getHeight() > Gdx.graphics.getHeight())
-        	setYSpeed(getYSpeed() * -1);
+        
         spr.setPosition(x, y);
+
+        if (x < 0 || x + spr.getWidth() > Gdx.graphics.getWidth() || y < 0 || y + spr.getHeight() > Gdx.graphics.getHeight()) {
+        // Marca el asteroide como fuera de la pantalla estableciendo las velocidades a 0
+        setXSpeed(0);
+        setYSpeed(0);
+        }
+        
     }
     
     public Rectangle getArea() {

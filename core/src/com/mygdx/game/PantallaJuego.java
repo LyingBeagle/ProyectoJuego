@@ -161,9 +161,15 @@ public class PantallaJuego implements Screen {
                     i--; // Para no saltarse 1 tras eliminar del arraylist
                 }
             }
-            // Actualizar movimiento de asteroides dentro del área
-            for (Ball2 ball : balls) {
-                ball.update();
+            // Actualizar movimiento de asteroides dentro del área y eliminarlos si salen de la pantalla
+            for (int i = 0; i < balls.size(); i++) {
+            Ball2 ball = balls.get(i);
+            ball.update();
+            // Eliminar asteroides que salgan de la pantalla
+            if (ball.getX() < 0 || ball.getX() > Gdx.graphics.getWidth() || ball.getY() < 0 || ball.getY() > Gdx.graphics.getHeight()) {
+                balls.remove(i);
+                i--; // Ajustar índice después de eliminación
+            }
             }
             // Colisiones entre asteroides y sus rebotes  
             for (int i = 0; i < balls.size(); i++) {
