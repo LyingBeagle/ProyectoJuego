@@ -36,7 +36,7 @@ public class PantallaJuego implements Screen {
     
     private EstrategiaGeneracion estrategiaGeneracion;
     private long lastStrategyChangeTime;
-    private long lastAsteroidGenerationTime;
+    private long lastSpeedIncreaseTime;
 
     public PantallaJuego(PuertaMagica game, int ronda, int vidasJugador, int score,  
             int velXAsteroides, int velYAsteroides, int cantAsteroides) {
@@ -112,6 +112,12 @@ public class PantallaJuego implements Screen {
         game.getFont().draw(batch, "Score:" + this.score, Gdx.graphics.getWidth() - 150, 30);
         game.getFont().draw(batch, "HighScore:" + game.getHighScore(), Gdx.graphics.getWidth() / 2 - 100, 30);
     }
+    
+    private void aumentarVelocidadAsteroides() {
+        for (Ball2 ball : balls) {
+            ball.setYSpeed(ball.getYSpeed() - 1); // Incrementa la velocidad hacia abajo
+        }
+    }
 
     @Override
     public void render(float delta) {
@@ -120,17 +126,16 @@ public class PantallaJuego implements Screen {
         dibujaEncabezado();
         
         // Cambiar la estrategia de generación cada cierto tiempo (ejemplo cada 5 segundos)
-        if (TimeUtils.nanoTime() - lastStrategyChangeTime > 10_000_000_000L) {
+        if (TimeUtils.nanoTime() - lastStrategyChangeTime > 5_000_000_000L) {
         cambiarEstrategia();
         lastStrategyChangeTime = TimeUtils.nanoTime();
         }
         
-        if (TimeUtils.nanoTime() - lastAsteroidGenerationTime > 5_000_000_000L) {
-            generarAsteroides();
-            lastAsteroidGenerationTime = TimeUtils.nanoTime();
+        // Aumentar la velocidad de los asteroides cada 10 segundos
+        if (TimeUtils.nanoTime() - lastSpeedIncreaseTime > 10_000_000_000L) {
+            aumentarVelocidadAsteroides();
+            lastSpeedIncreaseTime = TimeUtils.nanoTime();
         }
-        
-        
         
         if (!jugador.estaHerido()) {
             // Colisiones entre balas y asteroides y su destrucción  
