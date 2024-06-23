@@ -36,6 +36,7 @@ public class PantallaJuego implements Screen {
     
     private EstrategiaGeneracion estrategiaGeneracion;
     private long lastStrategyChangeTime;
+    private long lastAsteroidGenerationTime;
 
     public PantallaJuego(PuertaMagica game, int ronda, int vidasJugador, int score,  
             int velXAsteroides, int velYAsteroides, int cantAsteroides) {
@@ -101,10 +102,11 @@ public class PantallaJuego implements Screen {
                 estrategiaGeneracion = new GeneracionLinea();
                 break;
         }
+        generarAsteroides();
     }
 
     public void dibujaEncabezado() {
-        CharSequence str = "Vidas: " + jugador.getVidas() + " Ronda: " + ronda;
+        CharSequence str = "Vidas: " + jugador.getVidas();
         game.getFont().getData().setScale(2f);        
         game.getFont().draw(batch, str, 10, 30);
         game.getFont().draw(batch, "Score:" + this.score, Gdx.graphics.getWidth() - 150, 30);
@@ -122,6 +124,13 @@ public class PantallaJuego implements Screen {
         cambiarEstrategia();
         lastStrategyChangeTime = TimeUtils.nanoTime();
         }
+        
+        if (TimeUtils.nanoTime() - lastAsteroidGenerationTime > 2_000_000_000L) {
+            generarAsteroides();
+            lastAsteroidGenerationTime = TimeUtils.nanoTime();
+        }
+        
+        
         
         if (!jugador.estaHerido()) {
             // Colisiones entre balas y asteroides y su destrucción  

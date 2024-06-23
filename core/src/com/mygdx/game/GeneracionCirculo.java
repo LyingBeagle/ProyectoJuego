@@ -14,7 +14,7 @@ public class GeneracionCirculo implements EstrategiaGeneracion{
             double angle = 2 * Math.PI * i / cantidad;
             int newX = x + (int) (radio * Math.cos(angle));
             int newY = y + (int) (radio * Math.sin(angle));
-            asteroides.add(new Ball2(newX, newY, 20, velocidadX, velocidadY, tx, new EstrategiaMovimientoZigZag()));
+            asteroides.add(new Ball2(newX, newY, 20, 0, -Math.abs(velocidadY), tx, new MovimientoVertical()));
         }
         
         return asteroides;

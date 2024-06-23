@@ -13,7 +13,7 @@ public class GeneracionLinea implements EstrategiaGeneracion{
         int offsetY = 50; //Separacion de asteriodes
         for(int i=0; i < cantidad; i++){
             int newY = y - i * offsetY;
-            asteroides.add(new Ball2(x, newY, 20, velocidadX, velocidadY, tx, new EstrategiaMovimientoAbajo()));
+            asteroides.add(new Ball2(x, newY, 20, 0, -Math.abs(velocidadY), tx, new MovimientoVertical()));
         }
         
         return asteroides;
