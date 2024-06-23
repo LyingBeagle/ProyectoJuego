@@ -32,10 +32,12 @@ public class PantallaJuego implements Screen {
     private ArrayList<Ball2> balls = new ArrayList<>();
     private ArrayList<Bullet> balas = new ArrayList<>();
     
+    private int vidasEnemigo = 5;
+    
     private EstrategiaGeneracion estrategiaGeneracion;
     private long lastStrategyChangeTime;
 
-    public PantallaJuego(PuertaMagica game, int ronda, int vidasJugador, int vidasEnemigo, int score,  
+    public PantallaJuego(PuertaMagica game, int ronda, int vidasJugador, int score,  
             int velXAsteroides, int velYAsteroides, int cantAsteroides) {
         this.game = game;
         this.ronda = ronda;
@@ -186,19 +188,18 @@ public class PantallaJuego implements Screen {
             dispose();
             
         }
-        batch.end();
-        // Nivel completado
-        if (enemigo.estaDestruido()) {
-            avanzarARondaSiguiente();
-        }
-    }
-    
-    private void avanzarARondaSiguiente(){
-        Screen ss = new PantallaJuego(game, ronda + 1, jugador.getVidas(), 3, score, 
-                    velXAsteroides + 3, velYAsteroides + 3, cantAsteroides + 10);
-            ss.resize(1200, 800);
+        
+        //Nuevo - Ahora juego termina cuando enemigo esta destruido
+        if(enemigo.estaDestruido()){
+            if(score > game.getHighScore())
+                game.setHighScore(score);
+            Screen ss = new PantallaVictoria(game);
+            ss.resize(1200,800);
             game.setScreen(ss);
             dispose();
+        }
+        
+        batch.end();
     }
 
     public boolean agregarBala(Bullet bb) {
