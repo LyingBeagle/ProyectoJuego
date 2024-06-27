@@ -27,9 +27,11 @@ public class PantallaJuego implements Screen {
     private int velYAsteroides; 
     private int cantAsteroides;
     
+    private GameFactory factory;
+    
     private Jugador jugador;
     private Enemigo enemigo;
-    private ArrayList<Ball2> balls = new ArrayList<>();
+    private ArrayList<RegularAsteroid> balls = new ArrayList<>();
     private ArrayList<Bullet> balas = new ArrayList<>();
     
     private int vidasEnemigo = 5;
@@ -40,6 +42,7 @@ public class PantallaJuego implements Screen {
 
     public PantallaJuego(PuertaMagica game, int ronda, int vidasJugador, int score,  
             int velXAsteroides, int velYAsteroides, int cantAsteroides) {
+        this.factory = new PuertaMagicaFactory();
         this.game = game;
         this.ronda = ronda;
         this.score = score;
@@ -86,8 +89,8 @@ public class PantallaJuego implements Screen {
      }
     
     private void generarAsteroides(){
-        List<Ball2> nuevosAsteroides = estrategiaGeneracion.generarAsteroides(cantAsteroides, enemigo.getX(), enemigo.getY(), 
-                new Texture(Gdx.files.internal("aGreyMedium4.png")), velXAsteroides, velYAsteroides);
+        List<RegularAsteroid> nuevosAsteroides = estrategiaGeneracion.generarAsteroides(cantAsteroides, enemigo.getX(), enemigo.getY(), 
+                velXAsteroides, velYAsteroides, factory);
         balls.addAll(nuevosAsteroides);
     }
     
@@ -114,7 +117,7 @@ public class PantallaJuego implements Screen {
     }
     
     private void aumentarVelocidadAsteroides() {
-        for (Ball2 ball : balls) {
+        for (RegularAsteroid ball : balls) {
             ball.setYSpeed(ball.getYSpeed() - 1); // Incrementa la velocidad hacia abajo
         }
     }
@@ -163,7 +166,7 @@ public class PantallaJuego implements Screen {
             }
             // Actualizar movimiento de asteroides dentro del área y eliminarlos si salen de la pantalla
             for (int i = 0; i < balls.size(); i++) {
-            Ball2 ball = balls.get(i);
+            RegularAsteroid ball = balls.get(i);
             ball.update();
             // Eliminar asteroides que salgan de la pantalla
             if (ball.getX() < 0 || ball.getX() > Gdx.graphics.getWidth() || ball.getY() < 0 || ball.getY() > Gdx.graphics.getHeight()) {
@@ -173,9 +176,9 @@ public class PantallaJuego implements Screen {
             }
             // Colisiones entre asteroides y sus rebotes  
             for (int i = 0; i < balls.size(); i++) {
-                Ball2 ball1 = balls.get(i);   
+                RegularAsteroid ball1 = balls.get(i);   
                 for (int j = 0; j < balls.size(); j++) {
-                    Ball2 ball2 = balls.get(j); 
+                    RegularAsteroid ball2 = balls.get(j); 
                     if (i < j) {
                         ball1.checkCollision(ball2);
                     }
@@ -190,7 +193,7 @@ public class PantallaJuego implements Screen {
         enemigo.draw(batch, this);
         // Dibujar asteroides y manejar colisión con nave
         for (int i = 0; i < balls.size(); i++) {
-            Ball2 b = balls.get(i);
+            RegularAsteroid b = balls.get(i);
             b.draw(batch);
             // Perdió vida o game over
             if (jugador.checkCollision(b)) {
