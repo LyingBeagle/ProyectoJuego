@@ -11,8 +11,26 @@ public class Enemigo extends Unidad implements InteraccionesUnidades<Bullet> {
     private float velocidadHorizontal; // Velocidad horizontal del enemigo
     private boolean moviendoseDerecha; // Indica si el enemigo se está moviendo hacia la derecha
     
-    public Enemigo(int x, int y, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala) {
+    private static Enemigo enemigo_unico = null;
+    
+    private Enemigo(int x, int y, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala) {
         super(x, y, tx, soundChoque, txBala, soundBala);
+    }
+    
+    public static synchronized Enemigo getEnemigo(int x, int y, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala){
+        
+        if(enemigo_unico == null){
+            enemigo_unico = new Enemigo(x, y, tx, soundChoque, txBala, soundBala);
+        }
+        
+        return enemigo_unico;
+    }
+    
+    public void reset(int x, int y, int vidas){
+        spr.setPosition(x, y);
+        this.vidas = vidas;
+        this.herido = false;
+        this.destruida = false;
     }
     
     public void iniciarMovimiento(float velocidadHorizontal) {

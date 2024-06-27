@@ -73,11 +73,13 @@ public class PantallaJuego implements Screen {
         jugador.reset(Gdx.graphics.getWidth()/2-50, 30, vidasJugador);
 
         // Crear enemigo
-        enemigo = new Enemigo(Gdx.graphics.getWidth()/2-50, Gdx.graphics.getHeight()-100, 
+        enemigo = Enemigo.getEnemigo(Gdx.graphics.getWidth()/2-50, Gdx.graphics.getHeight()-100, 
                               new Texture(Gdx.files.internal("temp_enemy.jpg")),
                               Gdx.audio.newSound(Gdx.files.internal("hurt.ogg")), 
                               new Texture(Gdx.files.internal("Rocket2.png")), 
                               Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")));
+        
+        enemigo.reset(Gdx.graphics.getWidth()/2-50, Gdx.graphics.getHeight()-100, vidasEnemigo);
         
         enemigo.setVidas(vidasEnemigo);
         enemigo.iniciarMovimiento(200);
