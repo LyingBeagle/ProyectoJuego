@@ -135,13 +135,13 @@ public class PantallaJuego implements Screen {
         dibujaEncabezado();
         
         // Cambiar la estrategia de generación cada cierto tiempo (ejemplo cada 5 segundos)
-        if (TimeUtils.nanoTime() - lastStrategyChangeTime > 5_000_000_000L) {
+        if (TimeUtils.nanoTime() - lastStrategyChangeTime > 3_000_000_000L) {
         cambiarEstrategia();
         lastStrategyChangeTime = TimeUtils.nanoTime();
         }
         
         // Aumentar la velocidad de los asteroides cada 10 segundos
-        if (TimeUtils.nanoTime() - lastSpeedIncreaseTime > 10_000_000_000L) {
+        if (TimeUtils.nanoTime() - lastSpeedIncreaseTime > 4_000_000_000L) {
             aumentarVelocidadAsteroides();
             lastSpeedIncreaseTime = TimeUtils.nanoTime();
         }
