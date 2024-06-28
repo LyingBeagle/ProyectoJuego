@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 
-public class Jugador extends Unidad implements InteraccionesUnidades<RegularAsteroid> {
+public class Jugador extends Unidad implements InteraccionesUnidades<RegularProjectile> {
     
     private static Jugador jugador_unico = null;
     
@@ -103,7 +103,7 @@ public class Jugador extends Unidad implements InteraccionesUnidades<RegularAste
         }
     }
 
-    public boolean checkCollision(RegularAsteroid b) {
+    public boolean checkCollision(RegularProjectile b) {
         
         if (!herido && b.getArea().overlaps(spr.getBoundingRectangle())) {
             // rebote

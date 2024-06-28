@@ -1,4 +1,4 @@
 package com.mygdx.game;
 public interface EstrategiaMovimiento {
-    void mover(RegularAsteroid ball);
+    void mover(RegularProjectile projectile);
 }
