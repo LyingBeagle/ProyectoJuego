@@ -23,7 +23,7 @@ public class PantallaVictoria implements Screen{
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1200, 800);
         
-        //victoriaTexture = new Texture(Gdx.files.internal("victoria.png"));
+        victoriaTexture = new Texture(Gdx.files.internal("victoria.png"));
     }
     
     @Override
@@ -34,8 +34,7 @@ public class PantallaVictoria implements Screen{
         batch.setProjectionMatrix(camera.combined);
         
         batch.begin();
-        game.getFont().draw(batch, "Pincha en cualquier lado para reiniciar ...", 100, 300);
-        //batch.draw(victoriaTexture, 0, 0);
+        batch.draw(victoriaTexture, 0, 0);
         batch.end();
         
         if (Gdx.input.isTouched()|| Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {

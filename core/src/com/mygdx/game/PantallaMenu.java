@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 
@@ -11,12 +12,16 @@ public class PantallaMenu implements Screen {
 
 	private PuertaMagica game;
 	private OrthographicCamera camera;
+        
+        private Texture fondo;
 
 	public PantallaMenu(PuertaMagica game) {
 		this.game = game;
         
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1200, 800);
+                
+                fondo = new Texture(Gdx.files.internal("menu.png"));
 	}
 
 	@Override
@@ -25,15 +30,10 @@ public class PantallaMenu implements Screen {
 
 		camera.update();
 		game.getBatch().setProjectionMatrix(camera.combined);
-
 		game.getBatch().begin();
-		game.getFont().draw(game.getBatch(), "Bienvenido a Puerta Magica !", 140, 600);
-                game.getFont().draw(game.getBatch(), "Controles", 140, 550);
-                game.getFont().draw(game.getBatch(), "W - Mover arriba, S - Mover abajo", 140, 500);
-                game.getFont().draw(game.getBatch(), "A - Mover Izquierda, D - Mover derecha", 140, 450);
-                game.getFont().draw(game.getBatch(), "Espacio - Disparar", 140, 400);
-		game.getFont().draw(game.getBatch(), "Pincha en cualquier lado o presiona cualquier tecla para comenzar ...", 100, 300);
-	
+		game.getBatch().draw(fondo, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+                
+                
 		game.getBatch().end();
 
 		if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 
@@ -11,12 +12,16 @@ public class PantallaGameOver implements Screen {
 
 	private PuertaMagica game;
 	private OrthographicCamera camera;
+        
+        private Texture fondo;
 
 	public PantallaGameOver(PuertaMagica game) {
 		this.game = game;
         
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1200, 800);
+                
+                fondo = new Texture(Gdx.files.internal("gameover.png"));
 	}
 
 	@Override
@@ -27,8 +32,7 @@ public class PantallaGameOver implements Screen {
 		game.getBatch().setProjectionMatrix(camera.combined);
 
 		game.getBatch().begin();
-		game.getFont().draw(game.getBatch(), "Game Over !!! ", 120, 400,400,1,true);
-		game.getFont().draw(game.getBatch(), "Pincha en cualquier lado para reiniciar ...", 100, 300);
+                game.getBatch().draw(fondo, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 	
 		game.getBatch().end();
 
